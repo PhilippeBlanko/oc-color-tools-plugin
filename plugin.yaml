@@ -1,0 +1,6 @@
+plugin:
+  name: Color Tools
+  description: Enhances the native color picker and adds Twig filters and functions for color management and WCAG accessibility
+  author: Philippe Ducharme
+  icon: icon-eyedropper
+  homepage: https://github.com/PhilippeBlanko/oc-color-tools-plugin

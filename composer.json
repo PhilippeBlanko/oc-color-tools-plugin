@@ -1,0 +1,21 @@
+{
+  "name": "ducharme/colortools-plugin",
+  "type": "october-plugin",
+  "description": "Enhances the native color picker and adds Twig filters and functions for color management and WCAG accessibility",
+  "homepage": "https://github.com/PhilippeBlanko/oc-color-tools-plugin",
+  "keywords": ["octobercms", "plugin", "formwidget", "twig", "color", "picker", "contrast", "accessibility", "wcag"],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Philippe Ducharme",
+      "homepage": "https://github.com/PhilippeBlanko",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "composer/installers": "~1.0"
+  },
+  "extra": {
+    "installer-name": "colortools"
+  }
+}
