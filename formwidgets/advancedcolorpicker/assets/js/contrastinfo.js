@@ -8,8 +8,11 @@
   var ContrastInfo = function (element, options) {
     this.$el = $(element);
     this.$info = this.$el.find('.contrast-info');
-    this.$input = this.$el.find('input[type="text"], input[type="hidden"]');
+    this.$colorpicker = this.$el.closest('[data-control="colorpicker"]');
     this.$statusBadge = this.$info.find('.contrast-badge-status');
+
+    var lockerSelector = this.$colorpicker.data('data-locker');
+    this.$input = lockerSelector ? $(lockerSelector) : this.$el.find('input[type="hidden"]').first();
 
     this.options = {
       role: this.$info.data('role'),
@@ -52,17 +55,39 @@
     }
 
     // Écouter les changements sur ce champ
-    this.$input.on('change.oc.contrastinfo', function () {
-      self.validate();
-    });
+    if (this.$colorpicker && this.$colorpicker.length) {
+      var lastValue = this.$input.val();
+
+      this.$colorpicker.on('change.oc.colorpicker.oc.contrastinfo', function () {
+          var currentValue = self.$input.val();
+
+          if (currentValue !== lastValue) {
+            lastValue = currentValue;
+            self.validate();
+          }
+        }
+      );
+    }
 
     // Si contrastWith: écouter les changements sur l'autre champ
     if (this.options.contrastWith) {
-      var $linkedField = $('[name="' + this.options.contrastWith + '"]');
-      $linkedField.on('change.oc.contrastinfo', function () {
-        self.updateCompareColor($(this).val());
-        self.validate();
-      });
+      var $linkedInput = $('[name="' + this.options.contrastWith + '"]');
+      var $linkedColorpicker = $linkedInput.closest('[data-control="colorpicker"]');
+
+      if ($linkedColorpicker.length) {
+        var lastLinkedValue = $linkedInput.val();
+
+        $linkedColorpicker.on('change.oc.colorpicker.oc.contrastinfo', function () {
+            var val = $linkedInput.val();
+
+            if (val !== lastLinkedValue) {
+              lastLinkedValue = val;
+              self.updateCompareColor(val);
+              self.validate();
+            }
+          }
+        );
+      }
     }
 
     // Validation initiale
@@ -246,7 +271,6 @@
    */
   ContrastInfo.prototype.hideStatus = function () {
     this.$statusBadge.hide();
-    this.$message.hide();
   };
 
   /**
@@ -259,8 +283,8 @@
     }
 
     if (this.options.contrastWith) {
-      var $linkedField = $('[name="' + this.options.contrastWith + '"]');
-      return $linkedField.val() || (this.options.role === 'foreground' ? '#ffffff' : '#000000');
+      var $linkedInput = $('[name="' + this.options.contrastWith + '"]');
+      return $linkedInput.val() || (this.options.role === 'foreground' ? '#ffffff' : '#000000');
     }
 
     return null;

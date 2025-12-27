@@ -1,2 +1,5 @@
 1.0.0:
   - Initial version of Color Tools plugin
+
+1.0.1:
+  - Fix colorpicker change detection using October core events

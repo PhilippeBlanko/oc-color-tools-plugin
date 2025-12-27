@@ -121,7 +121,8 @@ oc.registerControl('colorpicker', class extends oc.ControlBase {
 
     onShowSpectrum(hexColor) {
         this.$customColor.data('hexColor', hexColor);
-        this.$dataLocker.val(hexColor);
+        // Plugin Color Tools ajoute le trigger
+        this.$dataLocker.val(hexColor).trigger('change');
         this.updateChosenColor(this.$customColor);
     }
 
